@@ -63,10 +63,11 @@ func MainLoop(ctx context.Context, consumer string, producers []ProducerConfig, 
 	}
 
 	ticker := time.NewTicker(time.Duration(tickRateMs) * time.Millisecond)
+	defer ticker.Stop()
+	
 	for {
 		select {
 		case <-ctx.Done():
-			ticker.Stop()
 			return
 		case <-ticker.C:
 			for {
