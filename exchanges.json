@@ -1,0 +1,5 @@
+{
+    "clock:exchange": [
+        [ "clock-gateway:queue", 10 ]
+    ]
+}

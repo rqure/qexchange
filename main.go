@@ -71,6 +71,8 @@ func MainLoop(ctx context.Context, consumer string, producers []ProducerConfig, 
 					break
 				}
 
+				app.Logger().Debug(fmt.Sprintf("Pushing %d bytes on exchange %s to %d queues", len(data), consumer, len(producers)))
+
 				for _, producer := range producers {
 					app.Producer(producer.Queue).PushRaw(data)
 				}
