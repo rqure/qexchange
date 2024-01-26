@@ -66,6 +66,7 @@ func MainLoop(ctx context.Context, consumer string, producers []ProducerConfig, 
 	for {
 		select {
 		case <-ctx.Done():
+			ticker.Stop()
 			return
 		case <-ticker.C:
 			for {
