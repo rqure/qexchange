@@ -53,7 +53,7 @@ func ParseExchangeMap(configFile string, logger *qmq.QMQLogger) map[string][]Pro
 	return structuredResult
 }
 
-func MainLoop(ctx context.Context, consumer string, producerConfig []ProducerConfig, app *qmq.QMQApplication) {
+func MainLoop(ctx context.Context, consumer string, producers []ProducerConfig, app *qmq.QMQApplication) {
 	tickRateMs, err := strconv.Atoi(os.Getenv("TICK_RATE_MS"))
 	if err != nil {
 		tickRateMs = 100
@@ -66,9 +66,13 @@ func MainLoop(ctx context.Context, consumer string, producerConfig []ProducerCon
 			return
 		case <-ticker.C:
 			for {
-				popped := app.Consumer(consumer).Pop()
+				data, popped := app.Consumer(consumer).PopRaw()
 				if popped == nil {
 					break
+				}
+
+				for _, producer := range producers {
+					app.Producer(producer.Queue).PushRaw(data)
 				}
 
 				popped.Ack()
@@ -97,10 +101,10 @@ func main() {
 		}
 
 		wg.Add(1)
-		go func() {
+		go func(ctx context.Context, consumer string, producers []ProducerConfig, app *qmq.QMQApplication) {
 			defer wg.Done()
 			MainLoop(ctx, consumer, producers, app)
-		}()
+		}(ctx, consumer, producers, app)
 	}
 
 	<-sigint
