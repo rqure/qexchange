@@ -1,18 +1,18 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"os"
 	"os/signal"
 	"strconv"
-	"strings"
 	"time"
 
 	qmq "github.com/rqure/qmq/src"
 )
 
 type ProducerConfig struct {
-	Queue string
+	Queue  string
 	Length int64
 }
 
@@ -22,7 +22,7 @@ func ParseExchangeMap() map[string][]ProducerConfig {
 	if err != nil {
 		log.Fatalf("Error parsing JSON: %s", err)
 	}
-	
+
 	// Convert to more structured data
 	structuredResult := make(map[string][]ProducerConfig)
 	for key, value := range result {
@@ -31,12 +31,12 @@ func ParseExchangeMap() map[string][]ProducerConfig {
 			if !ok {
 				continue
 			}
-			
+
 			number, ok := v[1].(float64) // JSON numbers are floats
 			if !ok {
 				continue
 			}
-			
+
 			structuredResult[key] = append(structuredResult[key], ProducerConfig{Queue: queueName, Length: int64(number)})
 		}
 	}
