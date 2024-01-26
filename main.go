@@ -38,15 +38,18 @@ func ParseExchangeMap(configFile string, logger *qmq.QMQLogger) map[string][]Pro
 		for _, v := range value {
 			queueName, ok := v[0].(string)
 			if !ok {
+				logger.Error(fmt.Sprintf("Encountered queue name that is not a string"))
 				continue
 			}
 
-			number, ok := v[1].(float64) // JSON numbers are floats
+			length, ok := v[1].(float64) // JSON numbers are floats
 			if !ok {
+				logger.Error(fmt.Sprintf("Encountered length that is not a number"))
 				continue
 			}
 
-			structuredResult[key] = append(structuredResult[key], ProducerConfig{Queue: queueName, Length: int64(number)})
+			structuredResult[key] = append(structuredResult[key], ProducerConfig{Queue: queueName, Length: int64(length)})
+			logger.Advise(fmt.Sprintf("Added binding between exchange '%s' and queue '%s' with up to %d entries", key, queueName, length))
 		}
 	}
 
