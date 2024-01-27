@@ -70,7 +70,6 @@ func MainLoop(ctx context.Context, consumer string, producers []ProducerConfig, 
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			app.Logger().Advise("Tick")
 			for {
 				data, popped := app.Consumer(consumer).PopRaw()
 				if popped == nil {
