@@ -49,7 +49,7 @@ func ParseExchangeMap(configFile string, logger *qmq.QMQLogger) map[string][]Pro
 			}
 
 			structuredResult[key] = append(structuredResult[key], ProducerConfig{Queue: queueName, Length: int64(length)})
-			logger.Advise(fmt.Sprintf("Added binding between exchange '%s' and queue '%s' with up to %d entries", key, queueName, length))
+			logger.Advise(fmt.Sprintf("Added binding between exchange '%s' and queue '%s' with up to %d entries", key, queueName, int(length)))
 		}
 	}
 
@@ -63,6 +63,8 @@ func MainLoop(ctx context.Context, consumer string, producers []ProducerConfig, 
 	}
 
 	ticker := time.NewTicker(time.Duration(tickRateMs) * time.Millisecond)
+	defer ticker.Stop()
+	
 	for {
 		select {
 		case <-ctx.Done():
