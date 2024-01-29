@@ -1,5 +1,8 @@
 {
     "clock:exchange": [
         [ "clock-gateway:queue", 10 ]
+    ],
+    "prayer:adhan:exchange": [
+        [ "audio-player:queue", 1 ]
     ]
 }
