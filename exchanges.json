@@ -3,6 +3,9 @@
         [ "clock-gateway:queue", 10 ]
     ],
     "prayer:adhan:exchange": [
-        [ "audio-player:queue", 1 ]
+        [ "audio-player:queue", 10 ]
+    ],
+    "audio-remote:exchange": [
+        [ "audio-player:queue", 10 ]
     ]
 }
