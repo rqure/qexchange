@@ -7,5 +7,8 @@
     ],
     "audio-remote:exchange": [
         [ "audio-player:queue", 10 ]
+    ],
+    "qmq2mqtt:exchange:zigbee2mqtt/garage-door-sensor": [
+        [ "garage:door-sensor:queue", 10 ]
     ]
 }
