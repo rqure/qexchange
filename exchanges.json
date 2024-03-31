@@ -6,6 +6,9 @@
         [ "audio-player:file:queue", 10 ]
     ],
     "qmq2mqtt:exchange:zigbee2mqtt/garage-door-sensor": [
-        [ "garage:door-sensor:queue", 10 ]
+        [ "garage:sensor:queue", 10 ]
+    ],
+    "garage:command:exchange": [
+        [ "qmq2mqtt:queue", 10 ]
     ]
 }
